@@ -68,7 +68,7 @@ const useForm = () => {
                 console.log("Response:", response.data);
                 setUser(response.data); // Assuming this updates some context or state
                 localStorage.setItem('user', JSON.stringify(response.data)); // Store user data
-                
+                localStorage.setItem('token',response.data.token)
                 // Reset input values
                 setInputValues({});
                 

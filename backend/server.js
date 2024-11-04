@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const productRoutes = require('./routes/productRoutes');
 const UserRoutes = require('./routes/UserRoutes'); // Your user routes
+const cartRoutes = require('./routes/cartRoutes'); // Your user routes
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -22,7 +23,7 @@ mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/ecom', {
 // Routes
 app.use('/api/products', productRoutes);
 app.use('/api/users', UserRoutes);
-
+app.use('/api', cartRoutes);
 // Start Server
 app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);
