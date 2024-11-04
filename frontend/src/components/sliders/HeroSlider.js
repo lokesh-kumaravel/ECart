@@ -34,7 +34,7 @@ const HeroSlider = () => {
                     const { id, title, tagline, heroImage, finalPrice, originalPrice, path } = item;
                     const newPrice = displayMoney(finalPrice);
                     const oldPrice = displayMoney(originalPrice);
-
+                    console.log(item.heroImage)
                     return (
                         <SwiperSlide
                             key={id}

@@ -8,7 +8,7 @@ import useScrollDisable from '../../hooks/useScrollDisable';
 const AccountForm = () => {
 
     const { isFormOpen, toggleForm } = useContext(commonContext);
-    const { inputValues, handleInputValues, handleFormSubmit } = useForm();
+    const { inputValues, handleInputValues, handleLoginFormSubmit } = useForm();
 
     const formRef = useRef();
 
@@ -33,7 +33,7 @@ const AccountForm = () => {
                 isFormOpen && (
                     <div className="backdrop">
                         <div className="modal_centered">
-                            <form id="account_form" ref={formRef} onSubmit={handleFormSubmit}>
+                            <form id="account_form" ref={formRef} onSubmit={handleLoginFormSubmit}>
 
                                 {/*===== Form-Header =====*/}
                                 <div className="form_head">
