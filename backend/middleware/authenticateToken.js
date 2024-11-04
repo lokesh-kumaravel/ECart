@@ -1,10 +1,9 @@
 const jwt = require('jsonwebtoken');
-const JWT_SECRET = 'Lokesh'; // Use a secure, environment-variable-based secret key
+const JWT_SECRET = process.env.JWT_SECRET || 'Lokesh';
 
-// Middleware to protect routes
 const authenticateToken = (req, res, next) => {
     const authHeader = req.headers['authorization'];
-    const token = authHeader && authHeader.split(' ')[1]; // Token should be after "Bearer"
+    const token = authHeader && authHeader.split(' ')[1];
 
     if (!token) {
         return res.status(401).json({ message: 'Access denied. No token provided.' });
@@ -14,8 +13,8 @@ const authenticateToken = (req, res, next) => {
         if (err) {
             return res.status(403).json({ message: 'Token verification failed', err });
         }
-        req.user = user; // Attach user info to request for use in routes
-        next(); // Proceed to the next middleware or route handler
+        req.user = user;
+        next(); // Continue to the next middleware or route
     });
 };
 

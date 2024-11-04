@@ -1,4 +1,4 @@
-import { createContext, useReducer, useEffect } from 'react';
+import { createContext, useReducer, useEffect, useState } from 'react';
 import commonReducer from './commonReducer';
 
 // Common-Context
@@ -16,7 +16,12 @@ const initialState = {
 // Common-Provider Component
 const CommonProvider = ({ children }) => {
     const [state, dispatch] = useReducer(commonReducer, initialState);
-
+    // const [user, setUser] = useState(null); // Declare user state here
+    const [user, setUser] = useState(() => {
+        // Retrieve user data from localStorage
+        const savedUser = localStorage.getItem('user');
+        return savedUser ? JSON.parse(savedUser) : null; // Parse user data or return null
+    });
     // Form actions
     const toggleForm = (toggle) => {
         return dispatch({
@@ -69,7 +74,6 @@ const CommonProvider = ({ children }) => {
     
         fetchProducts();
     }, []);
-    
 
     // Context values
     const values = {
@@ -77,7 +81,9 @@ const CommonProvider = ({ children }) => {
         toggleForm,
         setFormUserInfo,
         toggleSearch,
-        setSearchResults
+        setSearchResults,
+        user,
+        setUser
     };
 
     return (
@@ -89,6 +95,7 @@ const CommonProvider = ({ children }) => {
 
 export default commonContext;
 export { CommonProvider };
+
 
 // import { createContext, useReducer } from 'react';
 // import commonReducer from './commonReducer';
