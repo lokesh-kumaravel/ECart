@@ -58,7 +58,7 @@ const useForm = () => {
         };
         console.log("Form Data:", userData); // Log the user data being sent
         try {
-            const response = await axios.post('http://localhost:3000/api/users/register', userData, {
+            const response = await axios.post('http://localhost:3000/api/users/login', userData, {
                 headers: {
                     'Content-Type': 'application/json'
                 }
