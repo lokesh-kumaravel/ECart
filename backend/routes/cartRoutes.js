@@ -57,4 +57,40 @@ router.get("/cart/:userId", authenticateToken, async (req, res) => {
   }
 });
 
+// Update cart item quantity
+
+router.patch('/cart/update/:itemId', async (req, res) => {
+  const { itemId } = req.params; // This is the product's itemId (productId in the cart)
+  const { quantity, userId } = req.body; // Expecting { quantity: newQuantity, userId: userId }
+
+  try {
+    // Find the user by userId
+    const user = await User.findById(userId);
+
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    // Find the cart item by productId within the user's cart
+    const cartItem = user.cart.find(item => item.productId.toString() === itemId);
+
+    if (!cartItem) {
+      return res.status(404).json({ message: 'Cart item not found' });
+    }
+
+    // Update the quantity of the cart item
+    cartItem.quantity = quantity;
+
+    // Save the updated user document
+    await user.save();
+
+    // Respond with the updated cart item
+    res.status(200).json(cartItem);
+  } catch (error) {
+    console.error("Error updating cart item:", error);
+    res.status(500).json({ message: 'Internal server error', error: error.message });
+  }
+});
+
+
 module.exports = router;

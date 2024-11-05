@@ -60,7 +60,7 @@ const displayTotalAmount = displayMoney(totalAmount);
                   return (
                     <CartItem
                       key={item._id}
-                      id={productId.id}
+                      id={productId._id}
                       title={productId.title}
                       images={[productId.images[0]]} // Assuming 'heroImage' is an image URL
                       finalPrice={productId.finalPrice}
