@@ -1,9 +1,7 @@
 import React, { useContext, useRef } from 'react';
 import { Link } from 'react-router-dom';
-// import productsData from '../../data/productsData';
 import useOutsideClose from '../../hooks/useOutsideClose';
 import useScrollDisable from '../../hooks/useScrollDisable';
-// import { AiOutlineSearch } from 'react-icons/ai';
 import commonContext from '../../contexts/common/commonContext';
 
 const SearchBar = () => {
@@ -13,7 +11,6 @@ const SearchBar = () => {
 
     const searchRef = useRef();
 
-    // closing the SearchBar
     const closeSearch = () => {
         toggleSearch(false);
         setSearchResults([]);
@@ -24,7 +21,6 @@ const SearchBar = () => {
     useScrollDisable(isSearchOpen);
 
 
-    // handling Search
     const handleSearching = (e) => {
         const searchedTerm = e.target.value.toLowerCase().trim();
 

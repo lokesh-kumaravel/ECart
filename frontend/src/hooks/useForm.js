@@ -6,7 +6,6 @@ const useForm = () => {
     const { toggleForm, setFormUserInfo, setUser, user } = useContext(commonContext);
     const [inputValues, setInputValues] = useState({});
 
-    // Handling input values
     const handleInputValues = (e) => {
         const { name, value } = e.target;
 
@@ -16,11 +15,9 @@ const useForm = () => {
         }));
     };
 
-    // Handling form submission
     const handleFormSubmit = async (e) => {
         e.preventDefault();
 
-        // Ensure email is stored correctly
         const loggedUserInfo = inputValues.mail.split('@')[0].toUpperCase();
         const userData = {
             username: inputValues.username, // Make sure this key matches your backend model

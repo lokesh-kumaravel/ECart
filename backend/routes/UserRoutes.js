@@ -5,9 +5,7 @@ const bcrypt = require('bcrypt');
 const router = express.Router();
 const authenticateToken = require('../middleware/authenticateToken');
 
-const JWT_SECRET = process.env.JWT_SECRET || 'Lokesh'; // Use an environment variable in production
-
-// Registration Route
+const JWT_SECRET = process.env.JWT_SECRET || 'Lokesh';
 router.post('/register', async (req, res) => {
     const { username, email, password } = req.body;
 
@@ -23,7 +21,6 @@ router.post('/register', async (req, res) => {
     }
 });
 
-// Login Route
 router.post('/login', async (req, res) => {
     const { email, password } = req.body;
 
@@ -43,9 +40,7 @@ router.post('/login', async (req, res) => {
     }
 });
 
-// Protected Profile Route
 router.get('/profile', authenticateToken, (req, res) => {
-    // Check if req.user is set
     if (!req.user) {
         return res.status(401).json({ message: 'Unauthorized access' });
     }

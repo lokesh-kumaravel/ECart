@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Pagination, A11y, Autoplay } from 'swiper';
 import { displayMoney } from '../../helpers/utils';
-// import productsData from '../../data/productsData';
 import commonContext from '../../contexts/common/commonContext';
 import { useContext } from 'react';
 import 'swiper/scss';
@@ -13,7 +12,6 @@ import 'swiper/scss/pagination';
 
 const HeroSlider = () => {
     const { products } = useContext(commonContext);
-    // const heroProducts = productsData.filter(item => item.tag === 'hero-product');
     const heroProducts = products.filter(item => item.tag === 'hero-product');
 
     return (

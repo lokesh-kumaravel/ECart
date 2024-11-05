@@ -4,10 +4,8 @@ import filtersReducer from './filtersReducer';
 import commonContext from '../common/commonContext';
 import { useContext } from 'react';
 
-// Filters-Context
 const filtersContext = createContext();
 
-// Initial State
 const initialState = {
     allProducts: [],
     sortedValue: null,
@@ -24,12 +22,10 @@ const initialState = {
     },
 };
 
-// Filters-Provider Component
 const FiltersProvider = ({ children }) => {
     const { products } = useContext(commonContext);
     const [state, dispatch] = useReducer(filtersReducer, initialState);
 
-    // Loading All Products on the initial render
     useEffect(() => {
         if (products.length > 0) {
             const priceArr = products.map(item => item.finalPrice);
@@ -43,11 +39,9 @@ const FiltersProvider = ({ children }) => {
         }
     }, [products]);
 
-    // Function for applying Filters (sorting & filtering)
     const applyFilters = () => {
         let updatedProducts = [...state.allProducts];
 
-        // Sorting
         if (state.sortedValue) {
             switch (state.sortedValue) {
                 case 'Latest':
@@ -70,7 +64,6 @@ const FiltersProvider = ({ children }) => {
             }
         }
 
-        // Filtering
         const checkedBrandItems = state.updatedBrandsMenu.filter(item => item.checked).map(item => item.label.toLowerCase());
         if (checkedBrandItems.length) {
             updatedProducts = updatedProducts.filter(item => checkedBrandItems.includes(item.brand.toLowerCase()));
@@ -92,22 +85,18 @@ const FiltersProvider = ({ children }) => {
         applyFilters();
     }, [state.sortedValue, state.updatedBrandsMenu, state.updatedCategoryMenu, state.selectedPrice]);
 
-    // Dispatched Actions
     const setSortedValue = (sortValue) => dispatch({ type: 'SET_SORTED_VALUE', payload: { sortValue } });
     const handleBrandsMenu = (id) => dispatch({ type: 'CHECK_BRANDS_MENU', payload: { id } });
     const handleCategoryMenu = (id) => dispatch({ type: 'CHECK_CATEGORY_MENU', payload: { id } });
     const handlePrice = (event) => dispatch({ type: 'HANDLE_PRICE', payload: { value: event.target.value } });
     const handleMobSortVisibility = (toggle) => dispatch({ type: 'MOB_SORT_VISIBILITY', payload: { toggle } });
     const handleMobFilterVisibility = (toggle) => dispatch({ type: 'MOB_FILTER_VISIBILITY', payload: { toggle } });
-    // const handleClearFilters = () => dispatch({ type: 'CLEAR_FILTERS' });
     const handleClearFilters = () => {
         dispatch({ type: 'CLEAR_FILTERS' });
     
-        // Reload the page
         window.location.reload();
     };
     
-    // Context values
     const values = {
         ...state,
         setSortedValue,

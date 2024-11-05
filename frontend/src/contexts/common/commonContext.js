@@ -1,28 +1,22 @@
 import { createContext, useReducer, useEffect, useState } from 'react';
 import commonReducer from './commonReducer';
 
-// Common-Context
 const commonContext = createContext();
 
-// Initial State
 const initialState = {
     isFormOpen: false,
     formUserInfo: '',
     isSearchOpen: false,
     searchResults: [],
-    products: []  // New products state
+    products: [] 
 };
 
-// Common-Provider Component
 const CommonProvider = ({ children }) => {
     const [state, dispatch] = useReducer(commonReducer, initialState);
-    // const [user, setUser] = useState(null); // Declare user state here
     const [user, setUser] = useState(() => {
-        // Retrieve user data from localStorage
         const savedUser = localStorage.getItem('user');
-        return savedUser ? JSON.parse(savedUser) : null; // Parse user data or return null
+        return savedUser ? JSON.parse(savedUser) : null;
     });
-    // Form actions
     const toggleForm = (toggle) => {
         return dispatch({
             type: 'TOGGLE_FORM',
@@ -37,7 +31,6 @@ const CommonProvider = ({ children }) => {
         });
     };
 
-    // Search actions
     const toggleSearch = (toggle) => {
         return dispatch({
             type: 'TOGGLE_SEARCH',
@@ -52,7 +45,6 @@ const CommonProvider = ({ children }) => {
         });
     };
 
-    // Product actions
     const setProducts = (products) => {
         return dispatch({
             type: 'SET_PRODUCTS',
@@ -60,7 +52,6 @@ const CommonProvider = ({ children }) => {
         });
     };
 
-    // Fetch products
     useEffect(() => {
         const fetchProducts = async () => {
             try {
@@ -75,7 +66,6 @@ const CommonProvider = ({ children }) => {
         fetchProducts();
     }, []);
 
-    // Context values
     const values = {
         ...state,
         toggleForm,
@@ -96,71 +86,3 @@ const CommonProvider = ({ children }) => {
 export default commonContext;
 export { CommonProvider };
 
-
-// import { createContext, useReducer } from 'react';
-// import commonReducer from './commonReducer';
-
-// // Common-Context
-// const commonContext = createContext();
-
-// // Initial State
-// const initialState = {
-//     isFormOpen: false,
-//     formUserInfo: '',
-//     isSearchOpen: false,
-//     searchResults: []
-// };
-
-// // Common-Provider Component
-// const CommonProvider = ({ children }) => {
-
-//     const [state, dispatch] = useReducer(commonReducer, initialState);
-
-//     // Form actions
-//     const toggleForm = (toggle) => {
-//         return dispatch({
-//             type: 'TOGGLE_FORM',
-//             payload: { toggle }
-//         });
-//     };
-
-//     const setFormUserInfo = (info) => {
-//         return dispatch({
-//             type: 'SET_FORM_USER_INFO',
-//             payload: { info }
-//         });
-//     };
-
-//     // Search actions
-//     const toggleSearch = (toggle) => {
-//         return dispatch({
-//             type: 'TOGGLE_SEARCH',
-//             payload: { toggle }
-//         });
-//     };
-
-//     const setSearchResults = (results) => {
-//         return dispatch({
-//             type: 'SET_SEARCH_RESULTS',
-//             payload: { results }
-//         });
-//     };
-
-//     // Context values
-//     const values = {
-//         ...state,
-//         toggleForm,
-//         setFormUserInfo,
-//         toggleSearch,
-//         setSearchResults
-//     };
-
-//     return (
-//         <commonContext.Provider value={values}>
-//             {children}
-//         </commonContext.Provider>
-//     );
-// };
-
-// export default commonContext;
-// export { CommonProvider };

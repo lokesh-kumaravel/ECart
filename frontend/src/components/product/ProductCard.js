@@ -14,7 +14,6 @@ const ProductCard = (props) => {
     const { active, handleActive, activeClass } = useActive(false);
 
 
-    // handling Add-to-cart
     const handleAddItem = () => {
         const item = { ...props };
         addItem(item);

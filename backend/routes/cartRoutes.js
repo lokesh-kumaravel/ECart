@@ -1,60 +1,58 @@
 const express = require("express");
 const router = express.Router();
-const Cart = require("../model/Cart"); // Import the Cart model
-const authenticateToken = require("../middleware/authenticateToken"); // Adjust the path accordingly
-
-// Add an item to the cart
+const User = require("../model/User");
+const authenticateToken = require("../middleware/authenticateToken");
 router.post("/cart/add", authenticateToken, async (req, res) => {
   try {
-    const { productId } = req.body; // Get productId from the request body
-    const userId = req.user.id; // Get userId from the token
-    console.log("User ID:", userId); // For debugging
+    const { proid } = req.body;  
+    const userId = req.user.id; 
+    console.log(proid);
 
-    // Find the cart for the user
-    let cart = await Cart.findOne({ userId });
+ 
+    let user = await User.findById(userId);
+    const productId = proid;
 
-    if (!cart) {
-      // If the cart does not exist, create a new cart with the product
-      cart = new Cart({
-        userId,
-        items: [{ productId, quantity: 1 }], // Set default quantity to 1
-      });
-      await cart.save();
-      return res
-        .status(201)
-        .json({ message: "Cart created and item added", cart });
-    } else {
-      // If the cart exists, check if the product is already in the cart
-      const existingItem = cart.items.find(
-        (item) => item.productId.toString() === productId
-      );
-      console.log("This is Existing Items");
-      if (existingItem) {
-        // If the item exists, increase the quantity by one
-        existingItem.quantity += 1; // Increment the quantity
-        console.log(`Updated quantity: ${existingItem.quantity}`);
-
-        try {
-          const updatedCart = await cart.save(); // Save the updated cart
-          console.log(`Cart saved successfully: ${updatedCart}`);
-          return res.json({
-            message: "Item quantity updated",
-            cart: updatedCart,
-          });
-        } catch (saveError) {
-          console.error("Error saving the cart:", saveError);
-          return res.status(500).json({ message: "Error saving the cart" });
-        }
-      } else {
-        // If the item does not exist, add it to the cart with quantity 1
-        cart.items.push({ productId, quantity: 1 }); // Default quantity to 1 for new items
-        await cart.save(); // Save the updated cart
-        return res.json({ message: "Item added to cart", cart });
-      }
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
     }
+
+    const existingItem = user.cart.find(
+      (item) => item.productId.toString() === productId
+    );
+
+    if (existingItem) {
+      existingItem.quantity += 1;
+    } else {
+      user.cart.push({ productId, quantity: 1 });
+    }
+
+    await user.save();
+    return res.status(200).json({ message: "Cart updated", cart: user.cart });
   } catch (error) {
-    console.error("Error adding item to cart:", error);
-    res.status(500).json({ message: error.message });
+    console.error("Error updating cart:", error);
+    res.status(500).json({ message: "Error updating cart" });
+  }
+});
+
+router.get("/cart/:userId", authenticateToken, async (req, res) => {
+  
+  const { userId } = req.params;
+  console.log("Hello : "+userId);
+
+  try {
+    const user = await User.findById(userId).populate("cart.productId");
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    res.status(200).json({
+      cartItems: user.cart,
+      message: "Cart items retrieved successfully",
+    });
+  } catch (error) {
+    console.error("Error fetching cart items:", error);
+    res.status(500).json({ message: "Error fetching cart items" });
   }
 });
 

@@ -1,90 +1,88 @@
-import React, { createContext, useReducer, useContext } from "react";
+import React, { createContext, useReducer, useContext, useEffect } from "react";
 import cartReducer from "./cartReducer";
 import commonContext from "../common/commonContext";
 import axios from "axios";
 
-// Cart-Context
 const cartContext = createContext();
 
-// Initial State
 const initialState = {
   cartItems: [],
 };
 
-// Cart-Provider Component
 const CartProvider = ({ children }) => {
-  const { user } = useContext(commonContext); // Move this inside the component
+  const { user } = useContext(commonContext);
   const [state, dispatch] = useReducer(cartReducer, initialState);
 
-  // Function to add item to cart
-  const addItemToCart = async (userId, productId, quantity) => {
-    console.log("Hereeeh : "+userId);
-    
+  const fetchCartItems = async (userId) => {
     try {
-      // Retrieve the JWT token, for example from localStorage or context
-      const token = localStorage.getItem("token"); // Adjust this if your token is stored elsewhere
-
-      const response = await axios.post(
-        "http://localhost:3000/api/cart/add",
-        {
-          userId,
-          productId,
-          quantity,
-        },
+      const token = localStorage.getItem("token");
+      const response = await axios.get(
+        `http://localhost:3000/api/cart/${userId}`,
         {
           headers: {
-            Authorization: `Bearer ${token}`, // Set the Authorization header
+            Authorization: `Bearer ${token}`,
           },
         }
       );
+      const fetchedCartItems = response.data.cartItems;
+      console.log(fetchedCartItems);
+      
+      dispatch({ type: "SET_CART_ITEMS", payload: fetchedCartItems });
+    } catch (error) {
+      console.error("Error fetching cart items:", error);
+    }
+  };
 
-      console.log("Item added to cart:", response.data);
+  useEffect(() => {
+    if (user) {
+      fetchCartItems(user.user._id);
+    }
+  }, [user]);
+
+  const addItemToCart = async (userId, productId, quantity) => {
+    try {
+      const token = localStorage.getItem("token");
+      await axios.post(
+        "http://localhost:3000/api/cart/add",
+        { userId, productId, quantity },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      fetchCartItems(userId); 
     } catch (error) {
       console.error("Error adding item to cart:", error);
     }
   };
 
-  // Dispatched Actions
-  const addItem = (productId, quantity) => {
+  const addItem = (productId, quantity = 1) => {
     if (user) {
-      // Check if user is available
-      console.log(user.user._id);
-      addItemToCart(user.user._id, productId, quantity); // Call the function to add item
+      addItemToCart(user.user._id, productId, quantity);
+      const existingItem = state.cartItems.find((item) => item.id === productId);
+      if (existingItem) {
+        return dispatch({ type: "INCREMENT_ITEM", payload: { itemId: productId } });
+      } else {
+        return dispatch({ type: "ADD_TO_CART", payload: { item: { id: productId, quantity } } });
+      }
     } else {
       console.error("User is not logged in");
     }
-
-    // Constructing the item object to include id and quantity
-    const itemToAdd = { id: productId, quantity }; // You may also want to include other product details if necessary
-
-    return dispatch({
-      type: "ADD_TO_CART",
-      payload: { item: itemToAdd }, // Corrected payload structure
-    });
   };
 
   const removeItem = (itemId) => {
-    return dispatch({
-      type: "REMOVE_FROM_CART",
-      payload: { itemId },
-    });
+    return dispatch({ type: "REMOVE_FROM_CART", payload: { itemId } });
   };
 
   const incrementItem = (itemId) => {
-    return dispatch({
-      type: "INCREMENT_ITEM",
-      payload: { itemId },
-    });
+    return dispatch({ type: "INCREMENT_ITEM", payload: { itemId } });
   };
 
   const decrementItem = (itemId) => {
-    return dispatch({
-      type: "DECREMENT_ITEM",
-      payload: { itemId },
-    });
+    return dispatch({ type: "DECREMENT_ITEM", payload: { itemId } });
   };
 
-  // Context values
   const values = {
     ...state,
     addItem,

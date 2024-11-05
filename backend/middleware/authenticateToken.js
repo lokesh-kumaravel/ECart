@@ -14,7 +14,7 @@ const authenticateToken = (req, res, next) => {
             return res.status(403).json({ message: 'Token verification failed', err });
         }
         req.user = user;
-        next(); // Continue to the next middleware or route
+        next(); 
     });
 };
 

@@ -24,7 +24,7 @@ const commonReducer = (state, action) => {
         searchResults: action.payload.results,
       };
 
-    case "SET_PRODUCTS": // New case for setting products
+    case "SET_PRODUCTS":
       return { ...state, products: action.payload.products };
 
     case "SET_USER":

@@ -1,7 +1,6 @@
 import React from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Pagination, A11y } from 'swiper';
-// import productsData from '../../data/productsData';
 import ProductCard from '../product/ProductCard';
 import commonContext from '../../contexts/common/commonContext';
 import { useContext } from 'react';

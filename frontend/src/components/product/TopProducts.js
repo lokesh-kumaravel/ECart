@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { BsArrowRight } from 'react-icons/bs';
 import useActive from '../../hooks/useActive';
-// import productsData from '../../data/productsData';
 import ProductCard from './ProductCard';
 import commonContext from '../../contexts/common/commonContext';
 import { useContext } from 'react';
@@ -12,13 +11,11 @@ const TopProducts = () => {
     const [product, setProducts] = useState(products);
     const { activeClass, handleActive } = useActive(0);
 
-    // making a unique set of product's category
     const productsCategory = [
         'All',
         ...new Set(products.map(item => item.category))
     ];
 
-    // handling product's filtering
     const handleProducts = (category, i) => {
         if (category === 'All') {
             setProducts(products);

@@ -6,7 +6,6 @@ const BackTop = () => {
     const [isVisible, setIsVisible] = useState(false);
 
 
-    // back-to-top visibility toggling
     useEffect(() => {
         const handleScroll = () => window.scrollY >= 800 ? setIsVisible(true) : setIsVisible(false);
 
@@ -18,7 +17,6 @@ const BackTop = () => {
     }, []);
 
 
-    // back-to-top functionality
     const handleBackTop = () => {
         window.scrollTo({
             top: 0,
