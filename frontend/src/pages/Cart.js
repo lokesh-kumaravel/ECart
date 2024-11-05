@@ -14,27 +14,32 @@ const Cart = () => {
   const cartQuantity = cartItems.length;
 
   // total original price
-  const cartTotal = cartItems.map((item) => {
-    return item.originalPrice * item.quantity;
-  });
+// Total original price
+const cartTotal = cartItems.map((item) => {
+  const { productId, quantity } = item;
+  return (productId.originalPrice || 0) * quantity; // default to 0 if originalPrice is undefined
+});
 
-  const calculateCartTotal = calculateTotal(cartTotal);
-  const displayCartTotal = displayMoney(calculateCartTotal);
+const calculateCartTotal = calculateTotal(cartTotal);
+const displayCartTotal = displayMoney(calculateCartTotal);
 
-  // total discount
-  const cartDiscount = cartItems.map((item) => {
-    return (item.originalPrice - item.finalPrice) * item.quantity;
-  });
+// Total discount
+const cartDiscount = cartItems.map((item) => {
+  const { productId, quantity } = item;
+  return ((productId.originalPrice - productId.finalPrice) || 0) * quantity; // default to 0 if prices are undefined
+});
 
-  const calculateCartDiscount = calculateTotal(cartDiscount);
-  const displayCartDiscount = displayMoney(calculateCartDiscount);
+const calculateCartDiscount = calculateTotal(cartDiscount);
+const displayCartDiscount = displayMoney(calculateCartDiscount);
 
-  // final total amount
-  const totalAmount = calculateCartTotal - calculateCartDiscount;
-  const displayTotalAmount = displayMoney(totalAmount);
+// Final total amount
+const totalAmount = calculateCartTotal - calculateCartDiscount;
+const displayTotalAmount = displayMoney(totalAmount);
+
 
   return (
     <>
+    {console.log("ITEMSJK : "+cartItems)}
       <section id="cart" className="section">
         <div className="container">
           {cartQuantity === 0 ? (
@@ -48,17 +53,20 @@ const Cart = () => {
             <div className="wrapper cart_wrapper">
               <div className="cart_left_col">
                 {cartItems.map((item, index) => {
-                  console.log(`Item ${index}:`, item); // Log each item to verify its properties
+                  const { productId, quantity } = item;
+
+                  console.log(`Item ${index}:`, item);
+
                   return (
                     <CartItem
-                      key={item.id}
-                      id={item.id}
-                      title={item.title}
-                      images={item.images} // Ensure this is an array with at least one image
-                      finalPrice={item.finalPrice}
-                      originalPrice={item.originalPrice}
-                      quantity={item.quantity}
-                      path={item.path}
+                      key={item._id}
+                      id={productId.id}
+                      title={productId.title}
+                      images={[productId.images[0]]} // Assuming 'heroImage' is an image URL
+                      finalPrice={productId.finalPrice}
+                      originalPrice={productId.originalPrice}
+                      quantity={quantity}
+                      path={productId.path || ""} // Optional, use empty string if path is missing
                     />
                   );
                 })}

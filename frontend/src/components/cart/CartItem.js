@@ -14,15 +14,15 @@ const CartItem = (props) => {
 
     return (
         <div className="cart_item">
-            {console.log(id)}
+            {/* {console.log(id)}
             {console.log(title)}
             {console.log(finalPrice)}
             {console.log(originalPrice)}
-            {console.log(quantity)}
-            {console.log(path)}
+            {console.log(quantity)} */}
+            {console.log(images)}
             <figure className="cart_item_img">
                 <Link to={`${path}${id}`}>
-                    <img src={images?.[0] || '/path/to/placeholder-image.jpg'} alt="product-img" />
+                    <img src={images} alt="product-img" />
                 </Link>
             </figure>
             <div className="cart_item_info">

@@ -26,7 +26,7 @@ const CartProvider = ({ children }) => {
       );
       const fetchedCartItems = response.data.cartItems;
       console.log(fetchedCartItems);
-      
+
       dispatch({ type: "SET_CART_ITEMS", payload: fetchedCartItems });
     } catch (error) {
       console.error("Error fetching cart items:", error);
@@ -41,17 +41,20 @@ const CartProvider = ({ children }) => {
 
   const addItemToCart = async (userId, productId, quantity) => {
     try {
+      const proid = productId._id
       const token = localStorage.getItem("token");
       await axios.post(
         "http://localhost:3000/api/cart/add",
-        { userId, productId, quantity },
+        { userId, 
+          proid, 
+          quantity },
         {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         }
       );
-      fetchCartItems(userId); 
+      fetchCartItems(userId);
     } catch (error) {
       console.error("Error adding item to cart:", error);
     }
@@ -60,11 +63,19 @@ const CartProvider = ({ children }) => {
   const addItem = (productId, quantity = 1) => {
     if (user) {
       addItemToCart(user.user._id, productId, quantity);
-      const existingItem = state.cartItems.find((item) => item.id === productId);
+      const existingItem = state.cartItems.find(
+        (item) => item.id === productId
+      );
       if (existingItem) {
-        return dispatch({ type: "INCREMENT_ITEM", payload: { itemId: productId } });
+        return dispatch({
+          type: "INCREMENT_ITEM",
+          payload: { itemId: productId },
+        });
       } else {
-        return dispatch({ type: "ADD_TO_CART", payload: { item: { id: productId, quantity } } });
+        return dispatch({
+          type: "ADD_TO_CART",
+          payload: { item: { id: productId, quantity } },
+        });
       }
     } else {
       console.error("User is not logged in");

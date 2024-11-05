@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const User = require("../model/User");
 const authenticateToken = require("../middleware/authenticateToken");
+
 router.post("/cart/add", authenticateToken, async (req, res) => {
   try {
     const { proid } = req.body;  
