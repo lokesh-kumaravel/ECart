@@ -1,4 +1,4 @@
-#🌟ECART
+# 🌟ECART
 # 🛒 E-commerce MERN Application
 
 An e-commerce web application built with the MERN stack (MongoDB, Express.js, React, and Node.js) that allows users to browse products, view details, add items to their cart, and proceed to checkout.
