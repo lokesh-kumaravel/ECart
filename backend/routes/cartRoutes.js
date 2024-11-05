@@ -5,11 +5,10 @@ const authenticateToken = require("../middleware/authenticateToken");
 
 router.post("/cart/add", authenticateToken, async (req, res) => {
   try {
-    const { proid } = req.body;  
-    const userId = req.user.id; 
+    const { proid } = req.body;
+    const userId = req.user.id;
     console.log(proid);
 
- 
     let user = await User.findById(userId);
     const productId = proid;
 
@@ -36,9 +35,8 @@ router.post("/cart/add", authenticateToken, async (req, res) => {
 });
 
 router.get("/cart/:userId", authenticateToken, async (req, res) => {
-  
   const { userId } = req.params;
-  console.log("Hello : "+userId);
+  console.log("Hello : " + userId);
 
   try {
     const user = await User.findById(userId).populate("cart.productId");
@@ -59,7 +57,7 @@ router.get("/cart/:userId", authenticateToken, async (req, res) => {
 
 // Update cart item quantity
 
-router.patch('/cart/update/:itemId', async (req, res) => {
+router.patch("/cart/update/:itemId", async (req, res) => {
   const { itemId } = req.params; // This is the product's itemId (productId in the cart)
   const { quantity, userId } = req.body; // Expecting { quantity: newQuantity, userId: userId }
 
@@ -68,14 +66,16 @@ router.patch('/cart/update/:itemId', async (req, res) => {
     const user = await User.findById(userId);
 
     if (!user) {
-      return res.status(404).json({ message: 'User not found' });
+      return res.status(404).json({ message: "User not found" });
     }
 
     // Find the cart item by productId within the user's cart
-    const cartItem = user.cart.find(item => item.productId.toString() === itemId);
+    const cartItem = user.cart.find(
+      (item) => item.productId.toString() === itemId
+    );
 
     if (!cartItem) {
-      return res.status(404).json({ message: 'Cart item not found' });
+      return res.status(404).json({ message: "Cart item not found" });
     }
 
     // Update the quantity of the cart item
@@ -88,9 +88,35 @@ router.patch('/cart/update/:itemId', async (req, res) => {
     res.status(200).json(cartItem);
   } catch (error) {
     console.error("Error updating cart item:", error);
-    res.status(500).json({ message: 'Internal server error', error: error.message });
+    res
+      .status(500)
+      .json({ message: "Internal server error", error: error.message });
   }
 });
 
+router.delete("/cart/remove/:itemId", async (req, res) => {
+  const { itemId } = req.params;
+  const { userId } = req.body;
+  console.log(itemId+" "+userId)
+  try {
+    // Find the user and remove the item from their cart
+    const updatedUser = await User.findByIdAndUpdate(
+      userId,
+      { $pull: { cart: { productId: itemId } } },
+      { new: true } // Return the updated document
+    );
+
+    if (!updatedUser) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    res.status(200).json(updatedUser.cart); // Respond with updated cart
+  } catch (error) {
+    console.error("Error removing item from cart:", error);
+    res
+      .status(500)
+      .json({ message: "Internal server error", error: error.message });
+  }
+});
 
 module.exports = router;

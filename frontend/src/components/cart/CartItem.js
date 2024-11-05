@@ -6,20 +6,14 @@ import cartContext from '../../contexts/cart/cartContext';
 import QuantityBox from '../common/QuantityBox';
 
 const CartItem = (props) => {
-    const { id, images, title, info, finalPrice, originalPrice, quantity, path } = props;
-    const { removeItem } = useContext(cartContext);
-
+    const { id, images, title, originalPrice, finalPrice, quantity, path } = props;
+    const { removeItem, updateItemQuantity } = useContext(cartContext);
+  
     const newPrice = displayMoney(finalPrice);
     const oldPrice = displayMoney(originalPrice);
 
     return (
         <div className="cart_item">
-            {/* {console.log(id)}
-            {console.log(title)}
-            {console.log(finalPrice)}
-            {console.log(originalPrice)}
-            {console.log(quantity)} */}
-            {console.log(images)}
             <figure className="cart_item_img">
                 <Link to={`${path}${id}`}>
                     <img src={images} alt="product-img" />
@@ -28,7 +22,7 @@ const CartItem = (props) => {
             <div className="cart_item_info">
                 <div className="cart_item_head">
                     <h4 className="cart_item_title">
-                        <Link to={`/product-details/${id}`}>{title} {info}</Link>
+                        <Link to={`/product-details/${id}`}>{title}</Link>
                     </h4>
                     <div className="cart_item_del">
                         <span onClick={() => removeItem(id)}>
@@ -43,7 +37,11 @@ const CartItem = (props) => {
                     <small><del>{oldPrice}</del></small>
                 </h2>
 
-                <QuantityBox itemId={id} itemQuantity={quantity} />
+                <QuantityBox 
+                    itemId={id} 
+                    itemQuantity={quantity} 
+                    updateQuantity={updateItemQuantity} // Assuming you have a function for updating quantity
+                />
             </div>
         </div>
     );

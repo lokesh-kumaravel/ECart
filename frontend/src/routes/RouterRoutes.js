@@ -7,6 +7,7 @@ import Home from '../pages/Home';
 import ProductDetails from '../pages/ProductDetails';
 import ErrorPage from '../pages/ErrorPage';
 import Profile from '../pages/Profile';
+import OrderSummary from '../pages/OrderSummary';
 
 const RouterRoutes = () => {
 
@@ -20,6 +21,7 @@ const RouterRoutes = () => {
                 <Route path="/all-products" element={<AllProducts />} />
                 <Route path="/product-details/:productId" element={<ProductDetails />} />
                 <Route path="/profile" element={<Profile />} />
+                <Route path="/summary" element={<OrderSummary />} />
                 <Route path="*" element={<ErrorPage />} />
             </Routes>
         </>

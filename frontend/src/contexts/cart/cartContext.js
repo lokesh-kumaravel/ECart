@@ -79,9 +79,38 @@ const CartProvider = ({ children }) => {
       console.error("User is not logged in");
     }
   };
+  const removeItemFromDB = async (itemId) => {
+    const response = await fetch(
+      `http://localhost:3000/api/cart/remove/${itemId}`,
+      {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          // Include any authentication headers if needed
+        },
+        body: JSON.stringify({
+          itemId: itemId,
+          userId: user.user._id,
+        }),
+      }
+    );
 
-  const removeItem = (itemId) => {
-    return dispatch({ type: "REMOVE_FROM_CART", payload: { itemId } });
+    if (!response.ok) {
+      throw new Error("Failed to remove item from the cart");
+    }
+  };
+
+  const removeItem = async (itemId) => {
+    try {
+      // Assuming you have a function to make the API call
+      await removeItemFromDB(itemId); // Replace with your API call to remove the item
+
+      // Dispatch the action to remove the item from the cart in the UI
+      return dispatch({ type: "REMOVE_FROM_CART", payload: { itemId } });
+    } catch (error) {
+      console.error("Error removing item from cart:", error);
+      // Optionally handle error, e.g., show a notification
+    }
   };
 
   // cartContext.js
@@ -114,16 +143,20 @@ const CartProvider = ({ children }) => {
 
   const updateItemQuantityInDB = async (itemId, newQuantity) => {
     try {
-      const response = await fetch(`http://localhost:3000/api/cart/update/${itemId}`, {
-        method: "PATCH", // Or POST depending on your API
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ 
-          itemId: itemId,
-          userId: user.user._id,
-          quantity: newQuantity }),
-      });
+      const response = await fetch(
+        `http://localhost:3000/api/cart/update/${itemId}`,
+        {
+          method: "PATCH", // Or POST depending on your API
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            itemId: itemId,
+            userId: user.user._id,
+            quantity: newQuantity,
+          }),
+        }
+      );
 
       if (!response.ok) {
         throw new Error("Failed to update quantity in DB");
