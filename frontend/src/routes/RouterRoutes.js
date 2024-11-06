@@ -21,7 +21,7 @@ const RouterRoutes = () => {
                 <Route path="/all-products" element={<AllProducts />} />
                 <Route path="/product-details/:productId" element={<ProductDetails />} />
                 <Route path="/profile" element={<Profile />} />
-                <Route path="/summary" element={<OrderSummary />} />
+                <Route path="/checkout" element={<OrderSummary />} />
                 <Route path="*" element={<ErrorPage />} />
             </Routes>
         </>

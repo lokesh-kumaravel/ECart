@@ -11,42 +11,47 @@ import { useNavigate } from "react-router-dom";
 const Cart = () => {
   useDocTitle("Cart");
 
-  const navigate = useNavigate(); // Moved useNavigate hook here
+  const navigate = useNavigate();
 
   const { cartItems, setCartItems } = useContext(cartContext);
   const { user } = useContext(commonContext);
 
-  const cartQuantity = cartItems.length;
+  const cartQuantity = cartItems.length-1;
 
   useEffect(() => {
+    const token = localStorage.getItem("token");
     const fetchCartItems = async () => {
       const userId = user;
-      const response = await fetch(`http://localhost:3000/api/cart/${userId}`); // Adjust the endpoint as needed
+      const response = await fetch(`http://localhost:3000/api/cart/${userId}`
+        ,{
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+
+      ); 
       const data = await response.json();
-      setCartItems(data); // Set the cart items in context
+      setCartItems(data);
     };
 
     fetchCartItems();
   }, []);
 
-  // Handle checkout navigation
   const handleCheckout = () => {
-    navigate('/summary'); // Navigate to the checkout page
+    navigate('/checkout'); 
   };
 
-  // Total original price
   const cartTotal = cartItems.map((item) => {
     const { productId, quantity } = item;
-    return (productId.originalPrice || 0) * quantity; // Default to 0 if originalPrice is undefined
+    return (productId.originalPrice || 0) * quantity;
   });
 
   const calculateCartTotal = calculateTotal(cartTotal);
   const displayCartTotal = displayMoney(calculateCartTotal);
 
-  // Total discount
   const cartDiscount = cartItems.map((item) => {
     const { productId, quantity } = item;
-    return (productId.originalPrice - productId.finalPrice || 0) * quantity; // Default to 0 if prices are undefined
+    return (productId.originalPrice - productId.finalPrice || 0) * quantity;
   });
 
   const calculateCartDiscount = calculateTotal(cartDiscount);
@@ -81,11 +86,11 @@ const Cart = () => {
                       key={item._id}
                       id={productId._id}
                       title={productId.title}
-                      images={[productId.images[0]]} // Assuming 'images' is an array with URLs
+                      images={[productId.images[0]]} 
                       finalPrice={productId.finalPrice}
                       originalPrice={productId.originalPrice}
                       quantity={quantity}
-                      path={productId.path || ""} // Optional, use empty string if path is missing
+                      path={productId.path || ""} 
                     />
                   );
                 })}

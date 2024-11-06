@@ -5,7 +5,6 @@ import { calculateDiscount, displayMoney } from '../helpers/utils';
 import useDocTitle from '../hooks/useDocTitle';
 import useActive from '../hooks/useActive';
 import cartContext from '../contexts/cart/cartContext';
-// import productsData from '../data/productsData';
 import SectionsHead from '../components/common/SectionsHead';
 import RelatedSlider from '../components/sliders/RelatedSlider';
 import ProductSummary from '../components/product/ProductSummary';
@@ -25,10 +24,8 @@ const ProductDetails = () => {
 
     const { productId } = useParams();
 
-    // here the 'id' received has 'string-type', so converting it to a 'Number'
     const prodId = parseInt(productId);
 
-    // showing the Product based on the received 'id'
     const product = products.find(item => item.id === prodId);
 
     const { images, title, info, category, finalPrice, originalPrice, ratings, rateCount } = product;
@@ -36,28 +33,23 @@ const ProductDetails = () => {
     const [previewImg, setPreviewImg] = useState(images[0]);
 
 
-    // handling Add-to-cart
     const handleAddItem = () => {
         addItem(product);
     };
 
 
-    // setting the very-first image on re-render
     useEffect(() => {
         setPreviewImg(images[0]);
         handleActive(0);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [images]);
 
 
-    // handling Preview image
     const handlePreviewImg = (i) => {
         setPreviewImg(images[i]);
         handleActive(i);
     };
 
 
-    // calculating Prices
     const discountedPrice = originalPrice - finalPrice;
     const newPrice = displayMoney(finalPrice);
     const oldPrice = displayMoney(originalPrice);

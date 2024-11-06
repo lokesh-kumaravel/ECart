@@ -86,7 +86,6 @@ const CartProvider = ({ children }) => {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
-          // Include any authentication headers if needed
         },
         body: JSON.stringify({
           itemId: itemId,
@@ -102,42 +101,35 @@ const CartProvider = ({ children }) => {
 
   const removeItem = async (itemId) => {
     try {
-      // Assuming you have a function to make the API call
-      await removeItemFromDB(itemId); // Replace with your API call to remove the item
-
-      // Dispatch the action to remove the item from the cart in the UI
+      await removeItemFromDB(itemId);
       return dispatch({ type: "REMOVE_FROM_CART", payload: { itemId } });
     } catch (error) {
       console.error("Error removing item from cart:", error);
-      // Optionally handle error, e.g., show a notification
     }
   };
 
-  // cartContext.js
   const incrementItem = async (itemId, currentQuantity) => {
     console.log("Currt  " + currentQuantity);
-    const newQuantity = currentQuantity + 1; // Increment the current quantity by 1
+    const newQuantity = currentQuantity + 1; 
     try {
-      // Update the item in the database with the new quantity
       await updateItemQuantityInDB(itemId, newQuantity);
-      // Dispatch the action to update the state in the context
       dispatch({ type: "INCREMENT_ITEM", payload: { itemId, newQuantity } });
     } catch (error) {
       console.error("Error updating item in DB:", error);
-      // Optionally handle error, e.g., show a notification
     }
   };
 
   const decrementItem = async (itemId, currentQuantity) => {
-    const newQuantity = currentQuantity - 1; // Decrement the current quantity by 1
+    if(currentQuantity-1==0)
+    {
+      removeItemFromDB(itemId)
+    }
+    const newQuantity = currentQuantity - 1;
     try {
-      // Update the item in the database with the new quantity
       await updateItemQuantityInDB(itemId, newQuantity);
-      // Dispatch the action to update the state in the context
       dispatch({ type: "DECREMENT_ITEM", payload: { itemId, newQuantity } });
     } catch (error) {
       console.error("Error updating item in DB:", error);
-      // Optionally handle error
     }
   };
 
@@ -146,7 +138,7 @@ const CartProvider = ({ children }) => {
       const response = await fetch(
         `http://localhost:3000/api/cart/update/${itemId}`,
         {
-          method: "PATCH", // Or POST depending on your API
+          method: "PATCH", 
           headers: {
             "Content-Type": "application/json",
           },
@@ -165,7 +157,7 @@ const CartProvider = ({ children }) => {
       return await response.json();
     } catch (error) {
       console.error("API call error:", error);
-      throw error; // Rethrow to handle in increment/decrement functions
+      throw error; 
     }
   };
 

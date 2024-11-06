@@ -40,7 +40,7 @@ const CartItem = (props) => {
                 <QuantityBox 
                     itemId={id} 
                     itemQuantity={quantity} 
-                    updateQuantity={updateItemQuantity} // Assuming you have a function for updating quantity
+                    updateQuantity={updateItemQuantity} 
                 />
             </div>
         </div>

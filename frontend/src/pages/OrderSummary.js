@@ -1,23 +1,17 @@
-import React, { useContext, useState } from 'react';
-import cartContext from '../contexts/cart/cartContext';
-import { useNavigate } from 'react-router-dom';
+import React from "react";
+import Services from "../components/common/Services";
+const Home = () => {
+  return (
+    <main>
+      <section id="featured" className="section">
 
-// OrderSummary Component to display cart items and calculate total price
-const OrderSummary = ({ cartItems }) => {
-    const calculateTotal = (items) => {
-        return items.reduce((total, item) => total + item.finalPrice * item.quantity, 0);
-    };
+        HELLO THIS IS THE ORDER SUMMARY
+      </section>
 
-    return (
-        <div>
-            <h2>Order Summary</h2>
-            {cartItems.map(item => (
-                <div key={item.id}>
-                    <span>{item.title} - {item.quantity} x ${item.finalPrice}</span>
-                </div>
-            ))}
-            <h3>Total: ${calculateTotal(cartItems)}</h3>
-        </div>
-    );
+
+      <Services />
+    </main>
+  );
 };
-export default OrderSummary;
+
+export default Home;

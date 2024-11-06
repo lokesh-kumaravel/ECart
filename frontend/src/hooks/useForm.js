@@ -20,12 +20,12 @@ const useForm = () => {
 
         const loggedUserInfo = inputValues.mail.split('@')[0].toUpperCase();
         const userData = {
-            username: inputValues.username, // Make sure this key matches your backend model
-            email: inputValues.mail, // Match your backend model
-            password: inputValues.password // Password from the input
+            username: inputValues.username,
+            email: inputValues.mail, 
+            password: inputValues.password 
         };
 
-        console.log("Form Data:", userData); // Log the user data being sent
+        console.log("Form Data:", userData);
 
         try {
             const response = await axios.post('http://localhost:3000/api/users/register', userData, {
@@ -34,15 +34,13 @@ const useForm = () => {
                 }
             });
 
-            // Check for successful response
             console.log("Response:", response.data);
-            setInputValues({}); // Reset input values
+            setInputValues({});
             loggedUserInfo = response.data
-            setFormUserInfo(loggedUserInfo); // Set user info for UI
-            toggleForm(false); // Close form
+            setFormUserInfo(loggedUserInfo); 
+            toggleForm(false); 
             alert(`Hello ${loggedUserInfo}, you're successfully registered.`);
         } catch (error) {
-            // Handle error appropriately
             console.error("Error during form submission:", error.response.data || error);
             alert("There was an error submitting the form. Please try again.");
         }
@@ -63,16 +61,13 @@ const useForm = () => {
     
             if (response && response.data) {
                 console.log("Response:", response.data);
-                setUser(response.data); // Assuming this updates some context or state
-                localStorage.setItem('user', JSON.stringify(response.data)); // Store user data
+                setUser(response.data); 
+                localStorage.setItem('user', JSON.stringify(response.data)); 
                 localStorage.setItem('token',response.data.token)
-                // Reset input values
                 setInputValues({});
-                
-                // Set user info for UI
                 let userUsername = response.data.user.username;
-                setFormUserInfo(userUsername); // Update context with user info
-                toggleForm(false); // Close form
+                setFormUserInfo(userUsername);
+                toggleForm(false); 
                 alert(`Hello ${userUsername}, you're successfully logged in.`);
             } else {
                 console.error("Unexpected response format:", response);

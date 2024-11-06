@@ -55,21 +55,18 @@ router.get("/cart/:userId", authenticateToken, async (req, res) => {
   }
 });
 
-// Update cart item quantity
 
 router.patch("/cart/update/:itemId", async (req, res) => {
-  const { itemId } = req.params; // This is the product's itemId (productId in the cart)
-  const { quantity, userId } = req.body; // Expecting { quantity: newQuantity, userId: userId }
+  const { itemId } = req.params; 
+  const { quantity, userId } = req.body;
 
   try {
-    // Find the user by userId
     const user = await User.findById(userId);
 
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
 
-    // Find the cart item by productId within the user's cart
     const cartItem = user.cart.find(
       (item) => item.productId.toString() === itemId
     );
@@ -78,13 +75,10 @@ router.patch("/cart/update/:itemId", async (req, res) => {
       return res.status(404).json({ message: "Cart item not found" });
     }
 
-    // Update the quantity of the cart item
     cartItem.quantity = quantity;
 
-    // Save the updated user document
     await user.save();
 
-    // Respond with the updated cart item
     res.status(200).json(cartItem);
   } catch (error) {
     console.error("Error updating cart item:", error);
@@ -99,18 +93,17 @@ router.delete("/cart/remove/:itemId", async (req, res) => {
   const { userId } = req.body;
   console.log(itemId+" "+userId)
   try {
-    // Find the user and remove the item from their cart
     const updatedUser = await User.findByIdAndUpdate(
       userId,
       { $pull: { cart: { productId: itemId } } },
-      { new: true } // Return the updated document
+      { new: true } 
     );
 
     if (!updatedUser) {
       return res.status(404).json({ message: "User not found" });
     }
 
-    res.status(200).json(updatedUser.cart); // Respond with updated cart
+    res.status(200).json(updatedUser.cart);
   } catch (error) {
     console.error("Error removing item from cart:", error);
     res
