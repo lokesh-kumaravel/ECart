@@ -59,10 +59,10 @@ const FilterBarOptions = () => {
                 <ul className="sort_menu">
                     {
                         sortMenu.map(item => {
-                            const { id, title } = item;
+                            const { _id, title } = item;
                             return (
                                 <li
-                                    key={id}
+                                    key={_id}
                                     className={sortedValue === title ? 'active' : ''}
                                     onClick={() => setSortedValue(title)}
                                 >
@@ -95,15 +95,15 @@ const FilterBarOptions = () => {
                     <ul className="filter_menu">
                         {
                             updatedBrandsMenu.map(item => {
-                                const { id, checked, label } = item;
+                                const { _id, checked, label } = item;
                                 return (
-                                    <li key={id} className="filter_btn">
+                                    <li key={_id} className="filter_btn">
                                         <input
                                             type="checkbox"
-                                            id={label}
+                                            _id={label}
                                             value={label}
                                             checked={checked}
-                                            onChange={() => handleBrandsMenu(id)}
+                                            onChange={() => handleBrandsMenu(_id)}
                                         />
                                         <label htmlFor={label}>{label}</label>
                                     </li>
@@ -119,15 +119,15 @@ const FilterBarOptions = () => {
                     <ul className="filter_menu">
                         {
                             updatedCategoryMenu.map(item => {
-                                const { id, checked, label } = item;
+                                const { _id, checked, label } = item;
                                 return (
-                                    <li key={id} className="filter_btn">
+                                    <li key={_id} className="filter_btn">
                                         <input
                                             type="checkbox"
-                                            id={label}
+                                            _id={label}
                                             value={label}
                                             checked={checked}
-                                            onChange={() => handleCategoryMenu(id)}
+                                            onChange={() => handleCategoryMenu(_id)}
                                         />
                                         <label htmlFor={label}>{label}</label>
                                     </li>

@@ -57,12 +57,12 @@ const SearchBar = () => {
                                     <div className="search_results">
                                         {
                                             searchResults.map(item => {
-                                                const { id, title, path } = item;
+                                                const { _id, title, path } = item;
                                                 return (
                                                     <Link
-                                                        to={`${path}${id}`}
+                                                        to={`${path}${_id}`}
                                                         onClick={closeSearch}
-                                                        key={id}
+                                                        key={_id}
                                                     >
                                                         {title}
                                                     </Link>

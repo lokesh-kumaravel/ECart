@@ -52,15 +52,15 @@ const FeaturedSlider = () => {
                 className="featured_swiper"
             >
                 {featuredProducts.map((item) => {
-                    const { id, images, title, finalPrice, originalPrice, path } = item;
+                    const { _id, images, title, finalPrice, originalPrice, path } = item;
                     const newPrice = displayMoney(finalPrice);
                     const oldPrice = displayMoney(originalPrice);
 
                     return (
-                        <SwiperSlide key={id} className="featured_slides">
+                        <SwiperSlide key={_id} className="featured_slides">
                             <div className="featured_title">{title}</div>
                             <figure className="featured_img">
-                                <Link to={`${path}${id}`}>
+                                <Link to={`${path}${_id}`}>
                                     <img src={images[0]} alt={title} />
                                 </Link>
                             </figure>

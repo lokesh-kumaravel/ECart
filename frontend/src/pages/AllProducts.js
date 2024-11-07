@@ -27,7 +27,7 @@ const AllProducts = () => {
                                 {
                                     allProducts.map(item => (
                                         <ProductCard
-                                            key={item.id}
+                                            key={item._id}
                                             {...item}
                                         />
                                     ))

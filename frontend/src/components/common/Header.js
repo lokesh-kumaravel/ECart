@@ -74,9 +74,9 @@ const Header = () => {
                                     <div className="separator"></div>
                                     <ul>
                                         {dropdownMenu.map(item => {
-                                            const { id, link, path } = item;
+                                            const { _id, link, path } = item;
                                             return (
-                                                <li key={id}>
+                                                <li key={_id}>
                                                     <Link to={path}>{link}</Link>
                                                 </li>
                                             );

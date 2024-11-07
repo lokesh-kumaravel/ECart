@@ -24,10 +24,11 @@ const ProductDetails = () => {
 
     const { productId } = useParams();
 
-    const prodId = parseInt(productId);
-
-    const product = products.find(item => item.id === prodId);
-
+    const prodId = productId;
+    // const prodId = parseInt(productId);
+    // console.log("This is "+products[0]._id)
+    // console.log("Current product : "+productId)
+    const product = products.find(item => item._id === prodId);
     const { images, title, info, category, finalPrice, originalPrice, ratings, rateCount } = product;
 
     const [previewImg, setPreviewImg] = useState(images[0]);

@@ -102,6 +102,7 @@ const CartProvider = ({ children }) => {
   const removeItem = async (itemId) => {
     try {
       await removeItemFromDB(itemId);
+      window.location.reload();
       return dispatch({ type: "REMOVE_FROM_CART", payload: { itemId } });
     } catch (error) {
       console.error("Error removing item from cart:", error);
@@ -122,7 +123,7 @@ const CartProvider = ({ children }) => {
   const decrementItem = async (itemId, currentQuantity) => {
     if(currentQuantity-1==0)
     {
-      removeItemFromDB(itemId)
+      removeItem(itemId)
     }
     const newQuantity = currentQuantity - 1;
     try {

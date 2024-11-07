@@ -42,16 +42,16 @@ const Footer = () => {
 
                     {
                         footMenu.map(item => {
-                            const { id, title, menu } = item;
+                            const { _id, title, menu } = item;
                             return (
-                                <div className="foot_menu" key={id}>
+                                <div className="foot_menu" key={_id}>
                                     <h4>{title}</h4>
                                     <ul>
                                         {
                                             menu.map(item => {
-                                                const { id, link, path } = item;
+                                                const { _id, link, path } = item;
                                                 return (
-                                                    <li key={id}>
+                                                    <li key={_id}>
                                                         <Link to={path}>{link}</Link>
                                                     </li>
                                                 );
@@ -79,9 +79,9 @@ const Footer = () => {
                         <div className="foot_social">
                             {
                                 footSocial.map((item) => {
-                                    const { id, icon, path } = item;
+                                    const { _id, icon, path } = item;
                                     return (
-                                        <Link to={path} key={id}>{icon}</Link>
+                                        <Link to={path} key={_id}>{icon}</Link>
                                     );
                                 })
                             }

@@ -29,13 +29,13 @@ const HeroSlider = () => {
         >
             {
                 heroProducts.map((item, i) => {
-                    const { id, title, tagline, heroImage, finalPrice, originalPrice, path } = item;
+                    const { _id, title, tagline, heroImage, finalPrice, originalPrice, path } = item;
                     const newPrice = displayMoney(finalPrice);
                     const oldPrice = displayMoney(originalPrice);
-                    console.log(item.heroImage)
+                    // console.log(_id)
                     return (
                         <SwiperSlide
-                            key={id}
+                            key={_id}
                             className={`wrapper hero_wrapper hero_slide-${i}`}
                         >
                             <div className="hero_item_txt">
@@ -45,7 +45,7 @@ const HeroSlider = () => {
                                     {newPrice} &nbsp;
                                     <small><del>{oldPrice}</del></small>
                                 </h2>
-                                <Link to={`${path}${id}`} className="btn">Shop Now</Link>
+                                <Link to={`${path}${_id}`} className="btn">Shop Now</Link>
                             </div>
                             <figure className="hero_item_img">
                                 <img src={heroImage} alt="product-img" />

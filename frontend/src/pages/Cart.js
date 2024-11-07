@@ -16,7 +16,7 @@ const Cart = () => {
   const { cartItems, setCartItems } = useContext(cartContext);
   const { user } = useContext(commonContext);
 
-  const cartQuantity = cartItems.length-1;
+  const cartQuantity = cartItems.length;
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -84,7 +84,7 @@ const Cart = () => {
                   return (
                     <CartItem
                       key={item._id}
-                      id={productId._id}
+                      _id={productId._id}
                       title={productId.title}
                       images={[productId.images[0]]} 
                       finalPrice={productId.finalPrice}

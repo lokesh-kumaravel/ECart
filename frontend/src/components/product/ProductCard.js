@@ -8,7 +8,7 @@ import useActive from '../../hooks/useActive';
 
 const ProductCard = (props) => {
 
-    const { id, images, title, info, finalPrice, originalPrice, rateCount, path } = props;
+    const { _id, images, title, info, finalPrice, originalPrice, rateCount, path } = props;
 
     const { addItem } = useContext(cartContext);
     const { active, handleActive, activeClass } = useActive(false);
@@ -18,7 +18,7 @@ const ProductCard = (props) => {
         const item = { ...props };
         addItem(item);
 
-        handleActive(id);
+        handleActive(_id);
 
         setTimeout(() => {
             handleActive(false);
@@ -33,7 +33,7 @@ const ProductCard = (props) => {
         <>
             <div className="card products_card">
                 <figure className="products_img">
-                    <Link to={`${path}${id}`}>
+                    <Link to={`${path}${_id}`}>
                         <img src={images[0]} alt="product-img" />
                     </Link>
                 </figure>
@@ -44,7 +44,7 @@ const ProductCard = (props) => {
                         }
                     </span>
                     <h3 className="products_title">
-                        <Link to={`${path}${id}`}>{title}</Link>
+                        <Link to={`${path}${_id}`}>{title}</Link>
                     </h3>
                     <h5 className="products_info">{info}</h5>
                     <div className="separator"></div>
@@ -54,7 +54,7 @@ const ProductCard = (props) => {
                     </h2>
                     <button
                         type="button"
-                        className={`btn products_btn ${activeClass(id)}`}
+                        className={`btn products_btn ${activeClass(_id)}`}
                         onClick={handleAddItem}
                     >
                         {active ? 'Added' : 'Add to cart'}
