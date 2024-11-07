@@ -8,6 +8,7 @@ import ProductDetails from '../pages/ProductDetails';
 import ErrorPage from '../pages/ErrorPage';
 import Profile from '../pages/Profile';
 import OrderSummary from '../pages/OrderSummary';
+import AddProduct from '../pages/AddProduct';
 
 const RouterRoutes = () => {
 
@@ -22,6 +23,7 @@ const RouterRoutes = () => {
                 <Route path="/product-details/:productId" element={<ProductDetails />} />
                 <Route path="/profile" element={<Profile />} />
                 <Route path="/checkout" element={<OrderSummary />} />
+                <Route path="/addproduct" element={<AddProduct />} />
                 <Route path="*" element={<ErrorPage />} />
             </Routes>
         </>
