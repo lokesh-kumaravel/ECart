@@ -4,10 +4,8 @@ const Home = () => {
   return (
     <main>
       <section id="featured" className="section">
-
         HELLO THIS IS THE ORDER SUMMARY
       </section>
-
 
       <Services />
     </main>

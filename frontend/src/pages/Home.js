@@ -7,7 +7,7 @@ import Services from "../components/common/Services";
 // import commonContext from "../contexts/common/commonContext";
 // import { useContext } from "react";
 const Home = () => {
-//   const { products } = useContext(commonContext);
+  //   const { products } = useContext(commonContext);
   return (
     <main>
       <section id="hero">

@@ -22,14 +22,11 @@ const Cart = () => {
     const token = localStorage.getItem("token");
     const fetchCartItems = async () => {
       const userId = user;
-      const response = await fetch(`http://localhost:3000/api/cart/${userId}`
-        ,{
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-
-      ); 
+      const response = await fetch(`http://localhost:3000/api/cart/${userId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       const data = await response.json();
       setCartItems(data);
     };
@@ -38,7 +35,7 @@ const Cart = () => {
   }, []);
 
   const handleCheckout = () => {
-    navigate('/checkout'); 
+    navigate("/checkout");
   };
 
   const cartTotal = cartItems.map((item) => {
@@ -86,11 +83,11 @@ const Cart = () => {
                       key={item._id}
                       _id={productId._id}
                       title={productId.title}
-                      images={[productId.images[0]]} 
+                      images={[productId.images[0]]}
                       finalPrice={productId.finalPrice}
                       originalPrice={productId.originalPrice}
                       quantity={quantity}
-                      path={productId.path || ""} 
+                      path={productId.path || ""}
                     />
                   );
                 })}
@@ -192,7 +189,6 @@ export default Cart;
 // // Final total amount
 // const totalAmount = calculateCartTotal - calculateCartDiscount;
 // const displayTotalAmount = displayMoney(totalAmount);
-
 
 //   return (
 //     <>
