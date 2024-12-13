@@ -40,8 +40,18 @@ const ProductDetails = () => {
 
   const [previewImg, setPreviewImg] = useState(images[0]);
 
+  // const handleAddItem = () => {
+  //   addItem(product);
+  // };
   const handleAddItem = () => {
-    addItem(product);
+    const item = { ...product };
+    addItem(item);
+
+    // handleActive(_id);
+
+    // setTimeout(() => {
+    //     handleActive(false);
+    // }, 3000);
   };
 
   useEffect(() => {

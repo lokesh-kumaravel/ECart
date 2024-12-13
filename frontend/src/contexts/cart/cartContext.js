@@ -24,6 +24,7 @@ const CartProvider = ({ children }) => {
           },
         }
       );
+      console.log("Hello" + response);
       const fetchedCartItems = response.data.cartItems;
       console.log(fetchedCartItems);
 
@@ -111,7 +112,7 @@ const CartProvider = ({ children }) => {
 
   const incrementItem = async (itemId, currentQuantity) => {
     console.log("Currt  " + currentQuantity);
-    const newQuantity = currentQuantity + 1; 
+    const newQuantity = currentQuantity + 1;
     try {
       await updateItemQuantityInDB(itemId, newQuantity);
       dispatch({ type: "INCREMENT_ITEM", payload: { itemId, newQuantity } });
@@ -121,9 +122,8 @@ const CartProvider = ({ children }) => {
   };
 
   const decrementItem = async (itemId, currentQuantity) => {
-    if(currentQuantity-1==0)
-    {
-      removeItem(itemId)
+    if (currentQuantity - 1 == 0) {
+      removeItem(itemId);
     }
     const newQuantity = currentQuantity - 1;
     try {
@@ -139,7 +139,7 @@ const CartProvider = ({ children }) => {
       const response = await fetch(
         `http://localhost:3000/api/cart/update/${itemId}`,
         {
-          method: "PATCH", 
+          method: "PATCH",
           headers: {
             "Content-Type": "application/json",
           },
@@ -158,7 +158,7 @@ const CartProvider = ({ children }) => {
       return await response.json();
     } catch (error) {
       console.error("API call error:", error);
-      throw error; 
+      throw error;
     }
   };
 

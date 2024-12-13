@@ -7,7 +7,7 @@ import CartItem from "../components/cart/CartItem";
 import EmptyView from "../components/common/EmptyView";
 import commonContext from "../contexts/common/commonContext";
 import { useNavigate } from "react-router-dom";
-
+import axios from "axios";
 const Cart = () => {
   useDocTitle("Cart");
 
@@ -22,11 +22,16 @@ const Cart = () => {
     const token = localStorage.getItem("token");
     const fetchCartItems = async () => {
       const userId = user;
-      const response = await fetch(`http://localhost:3000/api/cart/${userId}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      console.log(userId);
+      const response = await axios.get(
+        `http://localhost:3000/api/cart/:${userId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      console.log(response);
       const data = await response.json();
       setCartItems(data);
     };

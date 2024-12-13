@@ -55,12 +55,9 @@ router.get("/cart/:userId", authenticateToken, async (req, res) => {
   }
 });
 
-
 router.patch("/cart/update/:itemId", async (req, res) => {
-  const { itemId } = req.params; 
+  const { itemId } = req.params;
   const { quantity, userId } = req.body;
-
-  
 
   try {
     const user = await User.findById(userId);
@@ -93,12 +90,12 @@ router.patch("/cart/update/:itemId", async (req, res) => {
 router.delete("/cart/remove/:itemId", async (req, res) => {
   const { itemId } = req.params;
   const { userId } = req.body;
-  console.log(itemId+" "+userId)
+  console.log(itemId + " " + userId);
   try {
     const updatedUser = await User.findByIdAndUpdate(
       userId,
       { $pull: { cart: { productId: itemId } } },
-      { new: true } 
+      { new: true }
     );
 
     if (!updatedUser) {
