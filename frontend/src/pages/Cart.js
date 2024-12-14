@@ -8,6 +8,7 @@ import EmptyView from "../components/common/EmptyView";
 import commonContext from "../contexts/common/commonContext";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { loadStripe } from "@stripe/stripe-js";
 const Cart = () => {
   useDocTitle("Cart");
 
@@ -20,26 +21,28 @@ const Cart = () => {
 
   useEffect(() => {
     const token = localStorage.getItem("token");
+    const userId = localStorage.getItem("userId");
+    // console.log(userId);
     const fetchCartItems = async () => {
-      const userId = user;
-      console.log(userId);
       const response = await axios.get(
-        `http://localhost:3000/api/cart/:${userId}`,
+        `http://localhost:3000/api/cart/${userId}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         }
       );
-      console.log(response);
+      // console.log(response);
       const data = await response.json();
+      // console.log(data);
       setCartItems(data);
     };
 
     fetchCartItems();
   }, []);
 
-  const handleCheckout = () => {
+  const makepayment = async () => {
+    // const stripe = await loadStripe
     navigate("/checkout");
   };
 
@@ -65,7 +68,7 @@ const Cart = () => {
 
   return (
     <>
-      {console.log("ITEMSJK : " + cartItems)}
+      {/* {console.log("ITEMSJK : " + cartItems)} */}
       <section id="cart" className="section">
         <div className="container">
           {cartQuantity === 0 ? (
@@ -81,7 +84,7 @@ const Cart = () => {
                 {cartItems.map((item, index) => {
                   const { productId, quantity } = item;
 
-                  console.log(`Item ${index}:`, item);
+                  // console.log(`Item ${index}:`, item);
 
                   return (
                     <CartItem
@@ -128,7 +131,7 @@ const Cart = () => {
                   <button
                     type="button"
                     className="btn checkout_btn"
-                    onClick={handleCheckout}
+                    onClick={makepayment}
                   >
                     Checkout
                   </button>
