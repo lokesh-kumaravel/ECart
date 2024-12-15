@@ -1,7 +1,6 @@
-import React from 'react';
-import servicesData from '../../data/servicesData';
-import SectionsHead from './SectionsHead';
-
+import React from "react";
+import servicesData from "../../data/servicesData";
+import SectionsHead from "./SectionsHead";
 
 const Services = () => {
   return (
@@ -10,21 +9,19 @@ const Services = () => {
         <div className="container">
           <SectionsHead heading="Our Advantages" />
           <div className="wrapper services_wrapper">
-            {
-              servicesData.map((item) => {
-                const { _id, icon, title, info } = item;
+            {servicesData.map((item) => {
+              const { _id, icon, title, info } = item;
 
-                return (
-                  <div className="services_card" key={_id}>
-                    <div className="services_icon">{icon}</div>
-                    <div className="services_details">
-                      <h4>{title}</h4>
-                      <p>{info}</p>
-                    </div>
+              return (
+                <div className="services_card" key={icon}>
+                  <div className="services_icon">{icon}</div>
+                  <div className="services_details">
+                    <h4>{title}</h4>
+                    <p>{info}</p>
                   </div>
-                );
-              })
-            }
+                </div>
+              );
+            })}
           </div>
         </div>
       </section>

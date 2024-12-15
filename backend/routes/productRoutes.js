@@ -4,10 +4,10 @@ const Product = require("../model/Product");
 const router = express.Router();
 
 router.get("/", async (req, res) => {
-  console.log("here 1");
+  // console.log("here 1");
   try {
     const products = await Product.find();
-    console.log(products);
+    // console.log(products);
     res.json(products);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -28,11 +28,11 @@ router.post("/", async (req, res) => {
 
 router.get("/product/:productId", async (req, res) => {
   const { productId } = req.params;
-  console.log("Hello : " + productId);
+  // console.log("Hello : " + productId);
 
   try {
     const product = await Product.findById(productId); // Await the result from the DB
-    console.log(product);
+    // console.log(product);
     if (!product) {
       return res.status(404).json({ message: "Product not found" });
     }
