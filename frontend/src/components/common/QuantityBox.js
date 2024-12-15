@@ -6,6 +6,7 @@ const QuantityBox = (props) => {
   const { itemId, itemQuantity } = props;
   const { incrementItem, decrementItem } = useContext(cartContext);
   console.log("In box quantity : " + itemId);
+
   return (
     <div className="quantity_box">
       <button type="button" onClick={() => decrementItem(itemId, itemQuantity)}>

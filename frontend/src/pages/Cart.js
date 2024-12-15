@@ -23,6 +23,7 @@ const Cart = () => {
     const token = localStorage.getItem("token");
     const userId = localStorage.getItem("userId");
     console.log(userId);
+
     const fetchCartItems = async () => {
       const response = await axios.get(
         `http://localhost:3000/api/cart/${userId}`,
@@ -35,6 +36,7 @@ const Cart = () => {
       // console.log(response);
       const data = await response.json();
       console.log(cartItems);
+
       setCartItems(data);
     };
 
@@ -42,6 +44,7 @@ const Cart = () => {
   }, []);
 
   const makepayment = async () => {
+
     const stripe = await loadStripe(
       process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY
     );
@@ -97,6 +100,8 @@ const Cart = () => {
     if (result.error) {
       console.error("Error with Stripe Checkout:", result.error.message);
     }
+    // const stripe = await loadStripe
+    navigate("/checkout");
   };
 
   // const makepayment = async () => {

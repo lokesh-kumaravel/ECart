@@ -24,10 +24,8 @@ const CartProvider = ({ children }) => {
           },
         }
       );
-      console.log("Hello" + response);
       const fetchedCartItems = response.data.cartItems;
       console.log(fetchedCartItems);
-
       dispatch({ type: "SET_CART_ITEMS", payload: fetchedCartItems });
     } catch (error) {
       console.error("Error fetching cart items:", error);

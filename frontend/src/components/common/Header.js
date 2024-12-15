@@ -21,6 +21,7 @@ const Header = () => {
     const storedUser = localStorage.getItem("user");
     if (storedUser) {
       const userData = JSON.parse(storedUser);
+      localStorage.setItem("userId", userData.user._id);
       setFormUserInfo(userData.user.username);
     }
   }, []);
