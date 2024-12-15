@@ -8,6 +8,7 @@ import EmptyView from "../components/common/EmptyView";
 import commonContext from "../contexts/common/commonContext";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { loadStripe } from "@stripe/stripe-js";
 const Cart = () => {
   useDocTitle("Cart");
 
@@ -20,28 +21,123 @@ const Cart = () => {
 
   useEffect(() => {
     const token = localStorage.getItem("token");
+    const userId = localStorage.getItem("userId");
+    console.log(userId);
     const fetchCartItems = async () => {
-      const userId = user;
-      console.log(userId);
       const response = await axios.get(
-        `http://localhost:3000/api/cart/:${userId}`,
+        `http://localhost:3000/api/cart/${userId}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         }
       );
-      console.log(response);
+      // console.log(response);
       const data = await response.json();
+      console.log(cartItems);
       setCartItems(data);
     };
 
     fetchCartItems();
   }, []);
 
-  const handleCheckout = () => {
-    navigate("/checkout");
+  const makepayment = async () => {
+    const stripe = await loadStripe(
+      process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY
+    );
+
+    console.log("This is the cart items : " + cartItems);
+    cartItems.forEach((item, index) => {
+      const { productId, quantity } = item;
+
+      // Log the item details to the console
+      console.log("Item", index + 1);
+      console.log("Product ID:", productId._id);
+      console.log("Title:", productId.title);
+      console.log("Image URL:", productId.images[0]);
+      console.log("Final Price:", productId.finalPrice);
+      console.log("Original Price:", productId.originalPrice);
+      console.log("Quantity:", quantity);
+      console.log("Path:", productId.path || "");
+      console.log("-----------------------------------");
+    });
+    const products = cartItems.map((item) => ({
+      name: item.productId.title, // Extract product title
+      image: item.productId.images[0], // Extract the first image URL
+      price: item.productId.finalPrice, // Extract the final price
+      quantity: item.quantity, // Extract the quantity
+    }));
+    console.log("This is the transformed products array:", products);
+    const headers = {
+      "Content-Type": "application/json",
+    };
+
+    // Sending the products data to the backend to create the Stripe session
+    const response = await fetch(
+      "http://localhost:3000/create-checkout-session",
+      {
+        method: "POST",
+        headers: headers,
+        body: JSON.stringify({ products }), // Ensure the body is an object with a products array
+      }
+    );
+
+    if (!response.ok) {
+      console.error("Error creating checkout session:", response.statusText);
+      return;
+    }
+
+    const session = await response.json();
+
+    // Redirect to Stripe Checkout with the sessionId received
+    const result = await stripe.redirectToCheckout({
+      sessionId: session.id,
+    });
+
+    if (result.error) {
+      console.error("Error with Stripe Checkout:", result.error.message);
+    }
   };
+
+  // const makepayment = async () => {
+  //   const stripe = await loadStripe(
+  //     "pk_test_51QVrCPKK1yvsvGYP1GWLOkDVtsWPxDhFiJ3P3NSWICZUac9s5VKQjiDzWHC9lcWIU1EH4Ap6JXkNWHUjTVtYZOy9002Gm7TYqK"
+  //   );
+
+  //   const body = [
+  //     {
+  //       name: "Product 1",
+  //       image: "https://example.com/product1.jpg",
+  //       price: 20.0,
+  //       quantity: 1,
+  //     },
+  //     {
+  //       name: "Product 2",
+  //       image: "https://example.com/product2.jpg",
+  //       price: 15.0,
+  //       quantity: 2,
+  //     },
+  //   ];
+  //   const headers = {
+  //     "Content-Type": "application/json",
+  //   };
+
+  //   const response = await fetch(
+  //     `http://localhost:3000/create-checkout-session`,
+  //     {
+  //       method: "POST",
+  //       headers: headers,
+  //       body: JSON.stringify(body),
+  //     }
+  //   );
+
+  //   const session = await response.json();
+
+  //   const result = stripe.redirectToCheckout({
+  //     sessionId: session.id,
+  //   });
+  //   // navigate("/checkout");
+  // };
 
   const cartTotal = cartItems.map((item) => {
     const { productId, quantity } = item;
@@ -65,7 +161,7 @@ const Cart = () => {
 
   return (
     <>
-      {console.log("ITEMSJK : " + cartItems)}
+      {/* {console.log("ITEMSJK : " + cartItems)} */}
       <section id="cart" className="section">
         <div className="container">
           {cartQuantity === 0 ? (
@@ -81,7 +177,7 @@ const Cart = () => {
                 {cartItems.map((item, index) => {
                   const { productId, quantity } = item;
 
-                  console.log(`Item ${index}:`, item);
+                  // console.log(`Item ${index}:`, item);
 
                   return (
                     <CartItem
@@ -128,7 +224,7 @@ const Cart = () => {
                   <button
                     type="button"
                     className="btn checkout_btn"
-                    onClick={handleCheckout}
+                    onClick={makepayment}
                   >
                     Checkout
                   </button>

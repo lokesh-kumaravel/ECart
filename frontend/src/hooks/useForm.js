@@ -26,7 +26,7 @@ const useForm = () => {
       password: inputValues.password,
     };
 
-    console.log("Form Data:", userData);
+    // console.log("Form Data:", userData);
 
     try {
       const response = await axios.post(
@@ -39,7 +39,7 @@ const useForm = () => {
         }
       );
 
-      console.log("Response:", response.data);
+      // console.log("Response:", response.data);
       setInputValues({});
       loggedUserInfo = response.data;
       setFormUserInfo(loggedUserInfo);
@@ -72,7 +72,7 @@ const useForm = () => {
       );
 
       if (response && response.data) {
-        console.log("Response:", response.data);
+        // console.log("Response:", response.data);
         setUser(response.data);
         localStorage.setItem("user", JSON.stringify(response.data));
         localStorage.setItem("token", response.data.token);
