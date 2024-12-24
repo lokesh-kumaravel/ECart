@@ -12,7 +12,6 @@ const CartItem = (props) => {
 
   const newPrice = displayMoney(finalPrice);
   const oldPrice = displayMoney(originalPrice);
-  // console.log(_id);
 
   return (
     <div className="cart_item">

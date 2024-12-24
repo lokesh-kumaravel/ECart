@@ -7,7 +7,6 @@ router.post("/cart/add", authenticateToken, async (req, res) => {
   try {
     const { proid } = req.body;
     const userId = req.user.id;
-    // console.log(proid);
 
     let user = await User.findById(userId);
     const productId = proid;
@@ -36,7 +35,6 @@ router.post("/cart/add", authenticateToken, async (req, res) => {
 
 router.get("/cart/:userId", authenticateToken, async (req, res) => {
   const { userId } = req.params;
-  // console.log("Hello : " + userId);
 
   try {
     const user = await User.findById(userId).populate("cart.productId");
@@ -90,7 +88,6 @@ router.patch("/cart/update/:itemId", async (req, res) => {
 router.delete("/cart/remove/:itemId", async (req, res) => {
   const { itemId } = req.params;
   const { userId } = req.body;
-  // console.log(itemId + " " + userId);
   try {
     const updatedUser = await User.findByIdAndUpdate(
       userId,

@@ -2,9 +2,6 @@ const Cart = require("../model/Cart");
 const addItemToCart = async (req, res) => {
   try {
     const { userId, productId, quantity } = req.body;
-    // console.log(userId)
-    // console.log(productId)
-    // console.log(quantity)
     let cart = await Cart.findOne({ userId });
     if (!cart) {
       cart = new Cart({ userId, items: [] });
